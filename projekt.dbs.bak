@@ -25,6 +25,7 @@
 			<column name="id_sektor" type="integer" jt="4" mandatory="y" />
 			<column name="id_rodzaj" type="integer" jt="4" mandatory="y" />
 			<column name="cena" type="integer" jt="4" />
+			<column name="sezon" type="date" jt="91" />
 			<index name="pk_bilety_ceny" unique="PRIMARY_KEY" >
 				<column name="id_sektor" />
 				<column name="id_rodzaj" />
@@ -57,22 +58,13 @@
 				<fk_column name="id_fanclubu" pk="id_fanclub" />
 			</fk>
 		</table>
-		<table name="karnet_typ" prior="karnet" >
-			<column name="id_typ" type="integer" jt="4" mandatory="y" />
-			<column name="typ" type="varchar" jt="12" />
-		</table>
 		<table name="karnety" prior="tbl" >
-			<column name="id_karnetu" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_karnetu" type="integer" jt="4" mandatory="y" />
 			<column name="id_kibica" type="integer" jt="4" />
-			<column name="id_sektor" type="integer" jt="4" />
-			<column name="okres_od" prior="okres" type="date" jt="91" />
-			<column name="okres_do" type="date" jt="91" />
 			<column name="id_typ" type="integer" jt="4" />
+			<column name="sezon" type="date" jt="91" />
 			<index name="pk_karnety" unique="PRIMARY_KEY" >
-				<column name="id_karnetu" />
-			</index>
-			<index name="unq_karnety_id_sektor" unique="UNIQUE_KEY" >
-				<column name="id_sektor" />
+				<column name="id" />
 			</index>
 			<index name="unq_karnety_id_typ" unique="UNIQUE_KEY" >
 				<column name="id_typ" />
@@ -80,13 +72,14 @@
 			<fk name="fk_karnety_kibice" to_schema="baza_biletow" to_table="kibice" >
 				<fk_column name="id_kibica" pk="id_kibica" />
 			</fk>
-			<fk name="fk_karnety_sektory" to_schema="baza_biletow" to_table="sektory" >
-				<fk_column name="id_sektor" pk="id_sektoru" />
-			</fk>
+			<fk name="fk_karnety_sektory" to_schema="baza_biletow" to_table="sektory" />
 		</table>
-		<table name="karnety_typy" prior="tbl" >
+		<table name="karnety_typy" prior="karnety_ceny" >
 			<column name="id_typ" type="integer" jt="4" mandatory="y" />
 			<column name="cena" type="integer" jt="4" />
+			<column name="opis" type="varchar" jt="12" />
+			<column name="sezon" type="varchar" jt="12" />
+			<column name="id_sektor" type="integer" jt="4" />
 			<index name="pk_karnety_typy" unique="PRIMARY_KEY" >
 				<column name="id_typ" />
 			</index>
@@ -104,13 +97,11 @@
 			</index>
 		</table>
 		<table name="kibice_restrykcje" prior="tbl" >
-			<column name="id_kary" type="integer" jt="4" mandatory="y" />
 			<column name="id_kibica" type="integer" jt="4" mandatory="y" />
 			<column name="opis" type="varchar" length="100" jt="12" />
 			<column name="data_od" type="date" jt="91" />
 			<column name="data_do" type="date" jt="91" />
 			<index name="pk_kibice_restrykcje" unique="PRIMARY_KEY" >
-				<column name="id_kary" />
 				<column name="id_kibica" />
 			</index>
 			<fk name="fk_kibice_restrykcje_karnety" to_schema="baza_biletow" to_table="kibice" >
@@ -122,6 +113,8 @@
 			<column name="przeciwnik" type="varchar" jt="12" />
 			<column name="data" type="date" jt="91" />
 			<column name="id_rodzaj" type="integer" jt="4" />
+			<column name="runda" type="boolean" jt="-7" />
+			<column name="sezon" type="date" jt="91" />
 			<index name="pk_mecze" unique="PRIMARY_KEY" >
 				<column name="id_meczu" />
 			</index>
@@ -140,19 +133,16 @@
 			<column name="id_sektoru" type="integer" jt="4" mandatory="y" />
 			<column name="nazwa" type="varchar" jt="12" />
 			<column name="sektor_gosci" type="boolean" jt="-7" />
-			<column name="mnoznik_karnet" prior="cena_karnet" type="integer" jt="4" />
 			<index name="pk_sektory" unique="PRIMARY_KEY" >
 				<column name="id_sektoru" />
 			</index>
 		</table>
 		<table name="sektory_restykcje" prior="tbl" >
-			<column name="id_kara" type="integer" jt="4" mandatory="y" />
 			<column name="id_sektoru" type="integer" jt="4" mandatory="y" />
 			<column name="opis" type="varchar" length="100" jt="12" />
 			<column name="data_od" type="date" jt="91" />
 			<column name="data_do" type="date" jt="91" />
 			<index name="pk_sektory_restykcje" unique="PRIMARY_KEY" >
-				<column name="id_kara" />
 				<column name="id_sektoru" />
 			</index>
 			<fk name="fk_sektory_restykcje_sektory" to_schema="baza_biletow" to_table="sektory" >
@@ -180,7 +170,7 @@
 				<column name="id_meczu" />
 			</index>
 			<fk name="fk_zwolnione_karnety_karnety" to_schema="baza_biletow" to_table="karnety" >
-				<fk_column name="id_karnetu" pk="id_karnetu" />
+				<fk_column name="id_karnetu" pk="id" />
 			</fk>
 			<fk name="fk_zwolnione_karnety_mecze" to_schema="baza_biletow" to_table="mecze" >
 				<fk_column name="id_meczu" pk="id_meczu" />
@@ -203,5 +193,25 @@
 		<entity schema="baza_biletow" name="sektory_restykcje" color="C1D8EE" x="544" y="48" />
 		<entity schema="baza_biletow" name="sektory_rzedy" color="C1D8EE" x="624" y="384" />
 		<entity schema="baza_biletow" name="zwolnione_karnety" color="C1D8EE" x="960" y="48" />
+	</layout>
+	<layout name="bilety" id="Layout-f94" show_relation="columns" >
+		<entity schema="baza_biletow" name="bilety" color="3986C1" x="288" y="48" />
+		<entity schema="baza_biletow" name="bilety_ceny" color="3986C1" x="48" y="256" />
+		<entity schema="baza_biletow" name="sektory" color="3986C1" x="48" y="48" />
+	</layout>
+	<layout name="karnety" id="Layout-2542" show_relation="columns" >
+		<entity schema="baza_biletow" name="karnety" color="3986C1" x="48" y="48" />
+		<entity schema="baza_biletow" name="karnety_typy" color="3986C1" x="256" y="288" />
+		<entity schema="baza_biletow" name="zwolnione_karnety" color="3986C1" x="256" y="48" />
+	</layout>
+	<layout name="kibice" id="Layout-11d" show_relation="columns" >
+		<entity schema="baza_biletow" name="fancluby" color="3986C1" x="448" y="48" />
+		<entity schema="baza_biletow" name="fancluby_kibice" color="3986C1" x="240" y="48" />
+		<entity schema="baza_biletow" name="kibice" color="3986C1" x="48" y="48" />
+		<entity schema="baza_biletow" name="kibice_restrykcje" color="3986C1" x="240" y="256" />
+	</layout>
+	<layout name="sektory" id="Layout-910" show_relation="columns" >
+		<entity schema="baza_biletow" name="sektory" color="3986C1" x="48" y="48" />
+		<entity schema="baza_biletow" name="sektory_restykcje" color="3986C1" x="288" y="48" />
 	</layout>
 </project>

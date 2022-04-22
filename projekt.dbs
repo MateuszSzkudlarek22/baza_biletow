@@ -12,36 +12,36 @@
 				<column name="id_meczu" />
 			</index>
 			<fk name="fk_bilety_mecze" to_schema="baza_biletow" to_table="mecze" >
-				<fk_column name="id_meczu" pk="id_meczu" />
+				<fk_column name="id_meczu" pk="id" />
 			</fk>
 			<fk name="fk_bilety_kibice" to_schema="baza_biletow" to_table="kibice" >
-				<fk_column name="id_kibica" pk="id_kibica" />
+				<fk_column name="id_kibica" pk="id" />
 			</fk>
 			<fk name="fk_bilety_sektory" to_schema="baza_biletow" to_table="sektory" >
-				<fk_column name="id_sektor" pk="id_sektoru" />
+				<fk_column name="id_sektor" pk="id" />
 			</fk>
 		</table>
 		<table name="bilety_ceny" prior="tbl" >
 			<column name="id_sektor" type="integer" jt="4" mandatory="y" />
 			<column name="id_rodzaj" type="integer" jt="4" mandatory="y" />
 			<column name="cena" type="integer" jt="4" />
-			<column name="sezon" type="date" jt="91" />
+			<column name="sezon_zmiany" prior="sezon" type="date" jt="91" />
 			<index name="pk_bilety_ceny" unique="PRIMARY_KEY" >
 				<column name="id_sektor" />
 				<column name="id_rodzaj" />
 			</index>
 			<fk name="fk_bilety_ceny_sektory" to_schema="baza_biletow" to_table="sektory" >
-				<fk_column name="id_sektor" pk="id_sektoru" />
+				<fk_column name="id_sektor" pk="id" />
 			</fk>
 			<fk name="fk_bilety_ceny_mecze_rodzaje" to_schema="baza_biletow" to_table="mecze_rodzaje" >
-				<fk_column name="id_rodzaj" pk="id_rodzaj" />
+				<fk_column name="id_rodzaj" pk="id" />
 			</fk>
 		</table>
 		<table name="fancluby" prior="fan_cluby" >
-			<column name="id_fanclub" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_fanclub" type="integer" jt="4" mandatory="y" />
 			<column name="nazwa" type="integer" jt="4" />
 			<index name="pk_fancluby" unique="PRIMARY_KEY" >
-				<column name="id_fanclub" />
+				<column name="id" />
 			</index>
 		</table>
 		<table name="fancluby_kibice" prior="tbl" >
@@ -52,17 +52,17 @@
 				<column name="id_fanclubu" />
 			</index>
 			<fk name="fk_fancluby_kibice_kibice" to_schema="baza_biletow" to_table="kibice" >
-				<fk_column name="id_kibica" pk="id_kibica" />
+				<fk_column name="id_kibica" pk="id" />
 			</fk>
 			<fk name="fk_fancluby_kibice_fancluby" to_schema="baza_biletow" to_table="fancluby" >
-				<fk_column name="id_fanclubu" pk="id_fanclub" />
+				<fk_column name="id_fanclubu" pk="id" />
 			</fk>
 		</table>
 		<table name="karnety" prior="tbl" >
 			<column name="id" prior="id_karnetu" type="integer" jt="4" mandatory="y" />
 			<column name="id_kibica" type="integer" jt="4" />
 			<column name="id_typ" type="integer" jt="4" />
-			<column name="sezon" type="date" jt="91" />
+			<column name="sezon_zmiany" prior="sezon" type="date" jt="91" />
 			<index name="pk_karnety" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
@@ -70,30 +70,30 @@
 				<column name="id_typ" />
 			</index>
 			<fk name="fk_karnety_kibice" to_schema="baza_biletow" to_table="kibice" >
-				<fk_column name="id_kibica" pk="id_kibica" />
+				<fk_column name="id_kibica" pk="id" />
 			</fk>
 			<fk name="fk_karnety_sektory" to_schema="baza_biletow" to_table="sektory" />
 		</table>
 		<table name="karnety_typy" prior="karnety_ceny" >
-			<column name="id_typ" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_typ" type="integer" jt="4" mandatory="y" />
 			<column name="cena" type="integer" jt="4" />
 			<column name="opis" type="varchar" jt="12" />
 			<column name="sezon" type="varchar" jt="12" />
 			<column name="id_sektor" type="integer" jt="4" />
 			<index name="pk_karnety_typy" unique="PRIMARY_KEY" >
-				<column name="id_typ" />
+				<column name="id" />
 			</index>
 			<fk name="fk_karnety_typy_karnety" to_schema="baza_biletow" to_table="karnety" >
-				<fk_column name="id_typ" pk="id_typ" />
+				<fk_column name="id" pk="id_typ" />
 			</fk>
 		</table>
 		<table name="kibice" prior="tbl" >
-			<column name="id_kibica" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_kibica" type="integer" jt="4" mandatory="y" />
 			<column name="imie" type="varchar" jt="12" mandatory="y" />
 			<column name="nazwisko" type="varchar" jt="12" mandatory="y" />
 			<column name="pesel" type="integer" jt="4" mandatory="y" />
 			<index name="pk_kibice" unique="PRIMARY_KEY" >
-				<column name="id_kibica" />
+				<column name="id" />
 			</index>
 		</table>
 		<table name="kibice_restrykcje" prior="tbl" >
@@ -105,36 +105,36 @@
 				<column name="id_kibica" />
 			</index>
 			<fk name="fk_kibice_restrykcje_karnety" to_schema="baza_biletow" to_table="kibice" >
-				<fk_column name="id_kibica" pk="id_kibica" />
+				<fk_column name="id_kibica" pk="id" />
 			</fk>
 		</table>
 		<table name="mecze" prior="tbl" >
-			<column name="id_meczu" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_meczu" type="integer" jt="4" mandatory="y" />
 			<column name="przeciwnik" type="varchar" jt="12" />
 			<column name="data" type="date" jt="91" />
 			<column name="id_rodzaj" type="integer" jt="4" />
 			<column name="runda" type="boolean" jt="-7" />
 			<column name="sezon" type="date" jt="91" />
 			<index name="pk_mecze" unique="PRIMARY_KEY" >
-				<column name="id_meczu" />
+				<column name="id" />
 			</index>
 			<fk name="fk_mecze_mecze_rodzaje" to_schema="baza_biletow" to_table="mecze_rodzaje" >
-				<fk_column name="id_rodzaj" pk="id_rodzaj" />
+				<fk_column name="id_rodzaj" pk="id" />
 			</fk>
 		</table>
 		<table name="mecze_rodzaje" prior="tbl" >
-			<column name="id_rodzaj" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_rodzaj" type="integer" jt="4" mandatory="y" />
 			<column name="opis" type="varchar" jt="12" />
 			<index name="pk_mecze_rodzaje" unique="PRIMARY_KEY" >
-				<column name="id_rodzaj" />
+				<column name="id" />
 			</index>
 		</table>
 		<table name="sektory" prior="tbl" >
-			<column name="id_sektoru" type="integer" jt="4" mandatory="y" />
+			<column name="id" prior="id_sektoru" type="integer" jt="4" mandatory="y" />
 			<column name="nazwa" type="varchar" jt="12" />
 			<column name="sektor_gosci" type="boolean" jt="-7" />
 			<index name="pk_sektory" unique="PRIMARY_KEY" >
-				<column name="id_sektoru" />
+				<column name="id" />
 			</index>
 		</table>
 		<table name="sektory_restykcje" prior="tbl" >
@@ -146,7 +146,7 @@
 				<column name="id_sektoru" />
 			</index>
 			<fk name="fk_sektory_restykcje_sektory" to_schema="baza_biletow" to_table="sektory" >
-				<fk_column name="id_sektoru" pk="id_sektoru" />
+				<fk_column name="id_sektoru" pk="id" />
 			</fk>
 		</table>
 		<table name="sektory_rzedy" prior="sektory_" >
@@ -158,7 +158,7 @@
 				<column name="rzad" />
 			</index>
 			<fk name="fk_sektory_rzedy_sektory" to_schema="baza_biletow" to_table="sektory" >
-				<fk_column name="id_sektor" pk="id_sektoru" />
+				<fk_column name="id_sektor" pk="id" />
 			</fk>
 		</table>
 		<table name="ulgi" prior="tbl" />
@@ -173,7 +173,7 @@
 				<fk_column name="id_karnetu" pk="id" />
 			</fk>
 			<fk name="fk_zwolnione_karnety_mecze" to_schema="baza_biletow" to_table="mecze" >
-				<fk_column name="id_meczu" pk="id_meczu" />
+				<fk_column name="id_meczu" pk="id" />
 			</fk>
 		</table>
 	</schema>
