@@ -1,5 +1,5 @@
 BEGIN;
-DROP TYPE IF EXISTS rodzaj_meczu cascade;
+DROP TYPE IF EXISTS mecz_rodzaj cascade;
 DROP TABLE IF EXISTS sektory cascade;
 DROP TABLE IF EXISTS mecze cascade;
 DROP TABLE IF EXISTS bilety_ceny cascade;

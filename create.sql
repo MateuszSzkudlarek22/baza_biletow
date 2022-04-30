@@ -1,7 +1,7 @@
 BEGIN;
 
 DROP TABLE IF EXISTS sektory cascade;
-DROP TYPE IF EXISTS rodzaj_meczu cascade;
+DROP TYPE IF EXISTS mecz_rodzaj cascade;
 DROP TABLE IF EXISTS mecze cascade;
 DROP TABLE IF EXISTS bilety_ceny cascade;
 DROP TABLE IF EXISTS kibice cascade;
@@ -22,15 +22,15 @@ CREATE TABLE sektory (
   sektor_gosci boolean NOT NULL
 );
 
-CREATE TYPE rodzaj_meczu AS ENUM ('liga', 'puchar', 'puchar_eu');
+CREATE TYPE mecz_rodzaj AS ENUM ('liga', 'puchar', 'puchar_eu');
 
 CREATE TABLE mecze(
   id integer PRIMARY KEY generated always as identity,
   przeciwnik varchar(20) NOT NULL,
   "data" date UNIQUE NOT NULL,
-  rodzaj rodzaj_meczu NOT NULL,
+  rodzaj_meczu mecz_rodzaj NOT NULL,
   sezon date NOT NULL,
-  CONSTRAINT przeciwnik_sezon UNIQUE (przeciwnik, sezon, rodzaj),
+  CONSTRAINT przeciwnik_sezon UNIQUE (przeciwnik, sezon, rodzaj_meczu),
   CONSTRAINT data_sezon CHECK("data">sezon)
 )
 ;
@@ -38,7 +38,7 @@ CREATE TABLE mecze(
 CREATE TABLE bilety_ceny(
   id int PRIMARY KEY generated always as identity,
   id_sektor integer REFERENCES sektory(id) NOT NULL,
-  rodzaj rodzaj_meczu NOT NULL,
+  rodzaj_meczu mecz_rodzaj NOT NULL,
   cena numeric(5, 2) NOT NULL,
   sezon_zmiany date NOT NULL
 )

@@ -25,7 +25,7 @@ INSERT INTO sektory (nazwa, sektor_gosci) VALUES
 ('D3', false),
 ('D4', false);
 
-INSERT INTO mecze (przeciwnik, "data", rodzaj, sezon) VALUES
+INSERT INTO mecze (przeciwnik, "data", rodzaj_meczu, sezon) VALUES
 ('Sandecja Nowy Sącz', '2021-08-1', 'liga', '2021-07-1'),
 ('Chrobry Głogów', '2021-08-15', 'liga', '2021-07-1'),
 ('Stomil Olsztyn', '2021-08-21', 'liga', '2021-07-1'),
@@ -69,7 +69,7 @@ INSERT INTO fancluby(nazwa) VALUES
 ('Fan Club Bełchatów'),
 ('Fan Club Łowicz');
  
-INSERT INTO bilety_ceny(id_sektor, rodzaj, cena, sezon_zmiany) VALUES
+INSERT INTO bilety_ceny(id_sektor, rodzaj_meczu, cena, sezon_zmiany) VALUES
 (1, 'liga', 12.90, '2018-07-01'),
 (1, 'puchar', 20.90, '2018-07-01'),
 (1, 'puchar_eu', 29.90, '2018-07-01'),
