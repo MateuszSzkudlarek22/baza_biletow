@@ -4,7 +4,7 @@ Izabela Tylek, Mateusz Szkudlarek
 ## Tematyka i opis
 Nasz projekt modeluje bazę biletów klubu piłkarskiego (opartą o istniejący klub). 
 
-Model zawiera następujące elementy:
+### Model zawiera następujące elementy:
 - Układ stadionu: sektory, rzędy, miejsca
 - Historię meczów z podziałem na rodzaje (mecz pucharowy, puchar eu, mecz ligowy)
 - Historię zakupionych karnetów
@@ -33,11 +33,11 @@ Model zawiera następujące elementy:
 - fankluby\_kibice: przynależność kibiców do fanklubów
 
 ## Napotkane problemy i sposoby rozwiązania
-- Problem: jak w sposób zgodny z rzeczywistością zamodelować wysokość ceny dla danego miejsca
+- Problem: jak w sposób zgodny z rzeczywistością zamodelować wysokość ceny dla danego miejsca\
 Rozwiązanie: uzależnienie ceny od rodzaju meczu i sektora
-- Problem: w jaki sposób zamodelować istnienie trzech rodzajów karnetów
+- Problem: w jaki sposób zamodelować istnienie trzech rodzajów karnetów\
 Rozwiązanie: dodanie do cen i typów karnetów dwóch booli: pierwsza\_runda, druga\_runda, kodujących typ karnetu
-- Problem: w jaki sposób uniknąć pustych miejsc, gdy osoba posiadająca karnet nie chce stawić się na pojedynczy mecz
+- Problem: w jaki sposób uniknąć pustych miejsc, gdy osoba posiadająca karnet nie chce stawić się na pojedynczy mecz\
 Rozwiązanie: dodanie możliwości zwalniania karnetów na pojedyncze mecze
 
 
