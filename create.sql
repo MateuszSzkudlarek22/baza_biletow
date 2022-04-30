@@ -18,36 +18,37 @@ DROP TABLE IF EXISTS sektory_rzedy cascade;
 
 CREATE TABLE sektory (
   id smallint PRIMARY KEY generated always as identity,
-  nazwa varchar(6) UNIQUE,
-  sektor_gosci boolean
+  nazwa varchar(6) UNIQUE NOT NULL,
+  sektor_gosci boolean NOT NULL
 );
 
 CREATE TYPE rodzaj_meczu AS ENUM ('liga', 'puchar', 'puchar_eu');
 
 CREATE TABLE mecze(
   id integer PRIMARY KEY generated always as identity,
-  przeciwnik varchar(20),
-  "data" date UNIQUE,
-  rodzaj rodzaj_meczu,
-  sezon date,
-  CONSTRAINT przeciwnik_sezon UNIQUE (przeciwnik, sezon, rodzaj)
+  przeciwnik varchar(20) NOT NULL,
+  "data" date UNIQUE NOT NULL,
+  rodzaj rodzaj_meczu NOT NULL,
+  sezon date NOT NULL,
+  CONSTRAINT przeciwnik_sezon UNIQUE (przeciwnik, sezon, rodzaj),
+  CONSTRAINT data_sezon CHECK("data">sezon)
 )
 ;
 
 CREATE TABLE bilety_ceny(
-  id_sektor integer REFERENCES sektory(id),
-  rodzaj rodzaj_meczu,
-  cena numeric(5, 2),
-  sezon_zmiany date,
-  PRIMARY KEY(id_sektor, rodzaj, sezon_zmiany)
+  id int PRIMARY KEY generated always as identity,
+  id_sektor integer REFERENCES sektory(id) NOT NULL,
+  rodzaj rodzaj_meczu NOT NULL,
+  cena numeric(5, 2) NOT NULL,
+  sezon_zmiany date NOT NULL
 )
 ;
 
 CREATE TABLE kibice(
   id integer PRIMARY KEY generated always as identity,
-  imie varchar(20),
-  nazwisko varchar(25),
-  pesel char(11) UNIQUE
+  imie varchar(20) NOT NULL,
+  nazwisko varchar(25) NOT NULL,
+  pesel char(11) UNIQUE NOT NULL
 )
 ;
 
@@ -65,7 +66,7 @@ CREATE TABLE bilety(
 
 CREATE TABLE fancluby(
   id integer PRIMARY KEY generated always as identity,
-  nazwa varchar(30) UNIQUE
+  nazwa varchar(30) UNIQUE NOT NULL
 )
 ;
 
@@ -77,24 +78,26 @@ CREATE TABLE fancluby_kibice(
 ;
 
 CREATE TABLE karnety_ceny(
-  id_sektor integer REFERENCES sektory(id),
-  pierwsza_runda boolean,
-  druga_runda boolean, 
-  cena numeric(5,2),
-  sezon_zmiany date
+  id integer PRIMARY KEY generated always as identity,
+  id_sektor integer REFERENCES sektory(id) NOT NULL,
+  pierwsza_runda boolean NOT NULL,
+  druga_runda boolean NOT NULL, 
+  cena numeric(5,2) NOT NULL,
+  sezon_zmiany date NOT NULL
 )
 ;
 
 CREATE TABLE karnety(
   id integer PRIMARY KEY generated always as identity,
-  id_kibica integer REFERENCES kibice(id),
-  pierwsza_runda boolean,
-  druga_runda boolean,
-  sezon date,
-  id_sektor smallint REFERENCES sektory(id),
-  rzad smallint,
-  miejsce smallint,
-  CONSTRAINT unique_kibic UNIQUE(id_kibica, pierwsza_runda, druga_runda, sezon),
+  id_kibica integer REFERENCES kibice(id) NOT NULL,
+  pierwsza_runda boolean NOT NULL,
+  druga_runda boolean NOT NULL,
+  sezon date NOT NULL,
+  id_sektor smallint REFERENCES sektory(id) NOT NULL,
+  rzad smallint NOT NULL,
+  miejsce smallint NOT NULL,
+  CONSTRAINT unique_kibic_runda1 UNIQUE(id_kibica, pierwsza_runda, sezon),
+  CONSTRAINT unique_kibic_runda2 UNIQUE(id_kibica, druga_runda, sezon),
   CONSTRAINT unique_miejsce_k UNIQUE(pierwsza_runda, druga_runda, sezon, id_sektor, rzad, miejsce)
 )
 ;
@@ -107,26 +110,29 @@ CREATE TABLE zwolnione_karnety(
 ;
 
 CREATE TABLE sektory_restrykcje(
-  id_sektora smallint REFERENCES sektory(id),
-  opis varchar(100),
-  data_od date,
-  data_do date CHECK(data_do>data_od),
-  PRIMARY KEY(id_sektora, data_od, data_do)
+  id integer PRIMARY KEY generated always as identity,
+  id_sektora smallint REFERENCES sektory(id) NOT NULL,
+  opis varchar(100) NOT NULL,
+  data_od date NOT NULL,
+  data_do date CHECK(data_do>data_od) NOT NULL
 )
 ;
 
 CREATE TABLE kibice_restrykcje(
-  id_kibica integer REFERENCES kibice(id),
+  id integer PRIMARY KEY generated always as identity,
+  id_kibica integer REFERENCES kibice(id) NOT NULL,
   opis varchar(100),
-  data_od date,
-  data_do date
+  data_od date NOT NULL,
+  data_do date NOT NULL
+  CONSTRAINT duration_positive CHECK(data_od<data_do)
 )
 ;
 
 CREATE TABLE sektory_rzedy(
   id_sektor smallint REFERENCES sektory(id),
   rzad smallint,
-  liczba_miejsc smallint
+  liczba_miejsc smallint NOT NULL,
+  PRIMARY KEY(id_sektor, rzad)
 )
 ;
 
