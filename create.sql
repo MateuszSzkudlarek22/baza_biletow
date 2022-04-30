@@ -356,4 +356,4 @@ INSERT INTO sektory_restrykcje VALUES(105, 'Kara za użycie pirotechniki podczas
 INSERT INTO sektory_restrykcje VALUES(106, 'Kara za użycie pirotechniki podczas meczu z ŁKS-em Łódź 24-10-2021', '2021-10-27', '2021-12-27' );
 INSERT INTO sektory_restrykcje VALUES(107, 'Kara za użycie pirotechniki podczas meczu z ŁKS-em Łódź 24-10-2021', '2021-10-27', '2021-12-27' );
 
-
+COMMIT;
